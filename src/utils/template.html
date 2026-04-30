@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aveti Learning — Invisible Living World | Class 8 Science</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{font-family:system-ui,-apple-system,sans-serif;background:#E8F5E9;min-height:100vh;overflow-x:hidden;}
+
+/* ════════════════════════════
+   HOME
+════════════════════════════ */
+#home{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-height:100vh;background:linear-gradient(135deg,#C8E6C9,#E8F5E9);
+  padding:clamp(16px,4vw,40px);position:relative;overflow:hidden;
+}
+.rocket{position:absolute;font-size:clamp(2rem,5vw,3.5rem);animation:fly linear infinite;z-index:0;}
+.r1{top:10%;left:-80px;animation-duration:3s;}
+.r2{top:42%;left:-80px;animation-duration:3.5s;animation-delay:1s;}
+.r3{top:72%;left:-80px;animation-duration:4s;animation-delay:0.5s;}
+@keyframes fly{from{left:-80px;}to{left:110%;}}
+.star{position:absolute;font-size:clamp(1rem,2.5vw,1.8rem);animation:twinkle 1.5s ease-in-out infinite alternate;}
+@keyframes twinkle{from{opacity:0.2;transform:scale(0.8);}to{opacity:1;transform:scale(1.3);}}
+.home-card{
+  background:#fff;border-radius:28px;padding:clamp(28px,5vw,52px);
+  max-width:560px;width:100%;text-align:center;
+  box-shadow:0 12px 48px rgba(46,125,50,0.18);position:relative;z-index:2;
+}
+.home-title{font-size:clamp(1.8rem,5vw,2.8rem);font-weight:900;color:#2E7D32;margin-bottom:6px;}
+.home-sub{font-size:clamp(0.9rem,2.5vw,1.15rem);color:#388E3C;margin-bottom:20px;font-weight:500;}
+.chapter-box{
+  background:#E8F5E9;border:2px solid #A5D6A7;border-radius:14px;
+  padding:clamp(12px,3vw,20px) clamp(16px,4vw,28px);margin-bottom:20px;
+}
+.chapter-box strong{font-size:clamp(1.05rem,3vw,1.4rem);color:#2E7D32;display:block;margin-bottom:6px;font-weight:800;}
+.chapter-box p{font-size:clamp(0.85rem,2.2vw,1.05rem);color:#1B5E20;line-height:1.7;}
+.badge{
+  display:inline-block;background:#D32F2F;color:#fff;
+  font-size:clamp(0.85rem,2.2vw,1.05rem);font-weight:800;
+  padding:8px 22px;border-radius:24px;margin-bottom:24px;
+  animation:pulse 2s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.06);}}
+.name-input{
+  width:100%;padding:clamp(14px,3vw,18px) 20px;
+  border:2.5px solid #A5D6A7;border-radius:14px;
+  font-size:clamp(1rem,2.8vw,1.2rem);color:#2E7D32;
+  outline:none;margin-bottom:18px;transition:border-color 0.3s;
+}
+.name-input:focus{border-color:#2E7D32;}
+.start-btn{
+  width:100%;padding:clamp(16px,3.5vw,20px);
+  background:#2E7D32;color:#fff;border:none;border-radius:14px;
+  font-size:clamp(1.1rem,3vw,1.4rem);font-weight:800;cursor:pointer;transition:all 0.3s;
+}
+.start-btn:hover{transform:translateY(-3px);background:#1B5E20;box-shadow:0 6px 24px rgba(46,125,50,0.35);}
+.powered{font-size:clamp(0.75rem,1.8vw,0.9rem);color:#66BB6A;margin-top:18px;}
+
+/* ════════════════════════════
+   QUIZ
+════════════════════════════ */
+#quiz{display:none;flex-direction:column;min-height:100vh;background:linear-gradient(135deg,#C8E6C9,#E8F5E9);}
+
+.top-bar{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:clamp(12px,2vw,18px) clamp(16px,4vw,28px);
+  background:#fff;box-shadow:0 2px 12px rgba(46,125,50,0.12);
+  position:sticky;top:0;z-index:10;gap:12px;
+}
+.brand{font-size:clamp(0.95rem,2.8vw,1.3rem);font-weight:900;color:#2E7D32;white-space:nowrap;}
+.q-counter{font-size:clamp(0.9rem,2.5vw,1.2rem);font-weight:800;color:#388E3C;white-space:nowrap;}
+.finish-btn{
+  padding:8px 18px;background:#2E7D32;color:#fff;border:none;border-radius:10px;
+  font-size:clamp(0.8rem,2vw,0.95rem);font-weight:800;cursor:pointer;
+  transition:all 0.3s;white-space:nowrap;
+}
+.finish-btn:hover{background:#1B5E20;}
+
+/* Segmented progress strip */
+.seg-bar{
+  display:flex;height:8px;background:#C8E6C9;gap:1px;
+}
+.seg{flex:1;transition:background 0.3s;}
+.seg.ans-correct{background:#2E7D32;}
+.seg.ans-wrong{background:#E57373;}
+.seg.ans-current{background:#66BB6A;opacity:0.7;}
+
+.stats-row{
+  display:flex;justify-content:center;gap:clamp(10px,3vw,28px);
+  padding:clamp(8px,1.5vw,14px) clamp(16px,4vw,28px);
+}
+.stat-box{
+  background:#fff;border-radius:14px;
+  padding:clamp(8px,1.5vw,14px) clamp(20px,4vw,40px);
+  text-align:center;box-shadow:0 2px 12px rgba(46,125,50,0.10);
+  flex:1;max-width:200px;
+}
+.stat-label{font-size:clamp(0.72rem,1.8vw,0.9rem);color:#66BB6A;text-transform:uppercase;font-weight:700;letter-spacing:0.5px;}
+.stat-val{font-size:clamp(1.3rem,3.5vw,1.9rem);font-weight:900;color:#2E7D32;}
+
+.quiz-body{
+  flex:1;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;padding:clamp(12px,3vw,32px);
+  gap:clamp(14px,2.5vw,24px);
+}
+
+/* ── CARD ── */
+.card-scene{width:100%;max-width:680px;perspective:1200px;cursor:pointer;}
+.card-inner{width:100%;position:relative;transform-style:preserve-3d;transition:transform 0.65s;}
+.card-inner.flipped{transform:rotateY(180deg);}
+.card-face{
+  width:100%;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  border-radius:24px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:clamp(28px,5vw,52px) clamp(24px,5vw,48px);
+  text-align:center;min-height:clamp(240px,38vw,360px);
+}
+.card-back-abs{position:absolute;top:0;left:0;}
+.card-front{background:#fff;box-shadow:0 10px 48px rgba(46,125,50,0.15);}
+.card-back{background:#2E7D32;transform:rotateY(180deg);box-shadow:0 10px 48px rgba(46,125,50,0.3);}
+
+/* Answered state overlays */
+.card-scene.was-correct .card-front{border:3px solid #2E7D32;}
+.card-scene.was-wrong .card-front{border:3px solid #E57373;}
+
+.card-type-badge{
+  font-size:clamp(0.78rem,2vw,1rem);font-weight:800;color:#66BB6A;
+  text-transform:uppercase;letter-spacing:2px;margin-bottom:clamp(12px,2vw,18px);
+  background:#E8F5E9;padding:4px 14px;border-radius:20px;
+}
+.card-question{font-size:clamp(1.3rem,4.5vw,2rem);font-weight:700;color:#1B5E20;line-height:1.5;}
+.tap-hint{font-size:clamp(0.82rem,2vw,1rem);color:#A5D6A7;margin-top:clamp(16px,2.5vw,24px);font-style:italic;}
+.card-answer{font-size:clamp(1.4rem,5vw,2.2rem);font-weight:900;color:#fff;line-height:1.45;}
+.answer-hint{font-size:clamp(0.82rem,2vw,1rem);color:#A5D6A7;margin-top:clamp(12px,2vw,20px);font-style:italic;}
+
+/* ── ANSWER BUTTONS ── */
+.btn-row{
+  display:flex;gap:clamp(10px,3vw,20px);justify-content:center;
+  width:100%;max-width:680px;
+  opacity:0;transition:opacity 0.3s;pointer-events:none;
+}
+.btn-row.visible{opacity:1;pointer-events:all;}
+.btn{
+  flex:1;padding:clamp(14px,2.5vw,20px) clamp(14px,3.5vw,28px);
+  border:none;border-radius:16px;
+  font-size:clamp(1rem,2.8vw,1.3rem);font-weight:800;
+  cursor:pointer;transition:all 0.3s;
+}
+.btn-wrong{background:#FFEBEE;color:#C62828;border:2px solid #FFCDD2;}
+.btn-correct{background:#E8F5E9;color:#1B5E20;border:2px solid #A5D6A7;}
+.btn-wrong:hover{background:#FFCDD2;transform:translateY(-2px);}
+.btn-correct:hover{background:#C8E6C9;transform:translateY(-2px);}
+
+/* ── NAVIGATION ROW ── */
+.nav-row{
+  display:flex;align-items:center;justify-content:space-between;
+  width:100%;max-width:680px;
+}
+.swipe-hint{
+  font-size:clamp(0.72rem,1.8vw,0.88rem);color:#A5D6A7;
+  font-style:italic;font-weight:600;letter-spacing:0.3px;
+  pointer-events:none;user-select:none;
+}
+.nav-btn{
+  display:flex;align-items:center;justify-content:center;
+  width:clamp(48px,10vw,60px);height:clamp(48px,10vw,60px);
+  border-radius:50%;border:2.5px solid #A5D6A7;background:#fff;
+  font-size:clamp(1.1rem,3vw,1.5rem);cursor:pointer;
+  transition:all 0.3s;box-shadow:0 2px 8px rgba(46,125,50,0.12);
+  color:#2E7D32;font-weight:900;flex-shrink:0;
+}
+.nav-btn:hover:not(:disabled){background:#E8F5E9;transform:scale(1.08);}
+.nav-btn:disabled{opacity:0.3;cursor:not-allowed;}
+.skip-btn{
+  flex:1;padding:clamp(12px,2vw,16px);
+  background:#fff;color:#388E3C;border:2px solid #A5D6A7;border-radius:14px;
+  font-size:clamp(0.9rem,2.5vw,1.1rem);font-weight:700;cursor:pointer;
+  transition:all 0.3s;text-align:center;
+}
+.skip-btn:hover{background:#E8F5E9;}
+.skip-btn.skipped-state{background:#FFF9C4;border-color:#F9A825;color:#F57F17;}
+
+/* ── XP POPUP ── */
+.xp-popup{
+  position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+  font-size:clamp(2rem,6vw,3.5rem);font-weight:900;
+  color:#2E7D32;pointer-events:none;opacity:0;z-index:100;
+}
+.xp-popup.show{animation:xpFloat 2s ease forwards;}
+@keyframes xpFloat{
+  0%{opacity:1;transform:translate(-50%,-50%) scale(0.5);}
+  50%{opacity:1;transform:translate(-50%,-80%) scale(1.3);}
+  100%{opacity:0;transform:translate(-50%,-140%) scale(1);}
+}
+
+/* ════════════════════════════
+   RESULT
+════════════════════════════ */
+#result{
+  display:none;flex-direction:column;
+  min-height:100vh;background:linear-gradient(135deg,#C8E6C9,#E8F5E9);
+  padding:clamp(16px,4vw,36px);
+}
+.res-top-bar{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:clamp(14px,2.5vw,24px);
+}
+.res-brand{font-size:clamp(1rem,3vw,1.4rem);font-weight:900;color:#2E7D32;}
+
+.res-card{
+  background:#fff;border-radius:24px;
+  padding:clamp(20px,4vw,40px);
+  max-width:600px;width:100%;margin:0 auto;
+  box-shadow:0 12px 48px rgba(46,125,50,0.14);
+}
+
+/* Header */
+.res-header{text-align:center;margin-bottom:clamp(16px,3vw,24px);}
+.res-student{font-size:clamp(1rem,3vw,1.25rem);color:#388E3C;font-weight:700;margin-bottom:4px;}
+.res-chapter{font-size:clamp(0.78rem,2vw,0.95rem);color:#66BB6A;margin-bottom:14px;}
+.score-pct{font-size:clamp(3rem,10vw,5.5rem);font-weight:900;color:#2E7D32;line-height:1;}
+.score-label{font-size:clamp(0.82rem,2vw,1rem);color:#66BB6A;font-weight:600;margin-bottom:6px;}
+.perf-msg{font-size:clamp(0.95rem,2.8vw,1.2rem);font-weight:700;color:#1B5E20;}
+
+/* ── SINGLE CIRCLE + STATS ROW ── */
+.circle-stats-row{
+  display:flex;align-items:center;justify-content:center;
+  gap:clamp(16px,4vw,32px);margin:clamp(16px,3vw,24px) 0;
+}
+.circle-wrap{
+  flex-shrink:0;
+  width:clamp(140px,32vw,180px);
+  height:clamp(140px,32vw,180px);
+  position:relative;
+}
+.circle-wrap svg{width:100%;height:100%;}
+.circle-inner{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  text-align:center;line-height:1.2;
+}
+.ci-num{font-size:clamp(1.8rem,6vw,2.6rem);font-weight:900;color:#2E7D32;display:block;}
+.ci-lbl{font-size:clamp(0.62rem,1.6vw,0.78rem);color:#66BB6A;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;display:block;}
+.ci-time{font-size:clamp(0.7rem,1.8vw,0.88rem);color:#388E3C;font-weight:700;display:block;margin-top:4px;}
+
+/* Right stats */
+.right-stats{display:flex;flex-direction:column;gap:clamp(8px,2vw,14px);flex:1;min-width:0;}
+.rst-item{
+  display:flex;align-items:center;justify-content:space-between;
+  background:#E8F5E9;border-radius:12px;
+  padding:clamp(8px,1.5vw,12px) clamp(10px,2vw,16px);
+  gap:8px;
+}
+.rst-label{font-size:clamp(0.72rem,1.8vw,0.88rem);color:#388E3C;font-weight:700;text-transform:uppercase;letter-spacing:0.4px;}
+.rst-val{font-size:clamp(1.2rem,3.5vw,1.6rem);font-weight:900;color:#2E7D32;}
+.rst-item.rst-wrong .rst-val{color:#C62828;}
+.rst-item.rst-skip .rst-val{color:#F57F17;}
+
+/* XP & Streak row */
+.xp-row{
+  display:grid;grid-template-columns:1fr 1fr;gap:clamp(8px,2vw,14px);
+  margin-bottom:clamp(10px,2vw,16px);
+}
+.xp-box{
+  background:#E8F5E9;border-radius:14px;padding:clamp(10px,2vw,16px);text-align:center;
+}
+.xp-label{font-size:clamp(0.68rem,1.6vw,0.85rem);color:#66BB6A;text-transform:uppercase;font-weight:700;letter-spacing:0.4px;}
+.xp-val{font-size:clamp(1.3rem,4vw,1.9rem);font-weight:900;color:#2E7D32;}
+
+/* Buttons */
+.res-btn-row{display:flex;gap:clamp(10px,2vw,16px);margin-bottom:clamp(14px,3vw,20px);}
+.res-btn{
+  flex:1;padding:clamp(14px,2.5vw,18px);border:none;border-radius:14px;
+  font-size:clamp(0.95rem,2.5vw,1.1rem);font-weight:800;cursor:pointer;transition:all 0.3s;
+}
+.btn-retry{background:#E8F5E9;color:#2E7D32;border:2.5px solid #A5D6A7;}
+.btn-share{background:#2E7D32;color:#fff;display:flex;align-items:center;justify-content:center;gap:6px;}
+.btn-retry:hover,.btn-share:hover{transform:translateY(-2px);box-shadow:0 4px 14px rgba(46,125,50,0.2);}
+.share-loader{display:none;width:16px;height:16px;border:2px solid rgba(255,255,255,0.4);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* CTA */
+.cta-box{
+  background:linear-gradient(135deg,#1B5E20,#2E7D32);
+  border-radius:20px;padding:clamp(18px,3.5vw,28px);color:#fff;text-align:center;
+}
+.cta-title{font-size:clamp(1rem,3vw,1.25rem);font-weight:900;margin-bottom:4px;}
+.cta-addr{font-size:clamp(0.75rem,2vw,0.9rem);opacity:0.88;margin-bottom:10px;line-height:1.5;}
+.cta-tags{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+.cta-tag{
+  background:rgba(255,255,255,0.18);border-radius:20px;
+  padding:4px 12px;font-size:clamp(0.68rem,1.8vw,0.82rem);font-weight:700;
+}
+.cta-phone{
+  display:inline-flex;align-items:center;gap:6px;background:#fff;color:#2E7D32;
+  font-weight:900;font-size:clamp(1rem,3vw,1.25rem);
+  padding:clamp(10px,2vw,14px) clamp(24px,5vw,40px);
+  border-radius:12px;text-decoration:none;transition:all 0.3s;
+}
+.cta-phone:hover{background:#E8F5E9;transform:translateY(-2px);}
+
+.res-powered{font-size:clamp(0.65rem,1.6vw,0.8rem);color:#66BB6A;text-align:center;margin-top:12px;}
+
+/* Responsive */
+@media(min-width:768px){
+  .quiz-body{padding:24px 48px;}
+  .card-scene,.btn-row,.nav-row{max-width:720px;}
+  .stats-row{gap:24px;padding:14px 48px;}
+}
+@media(min-width:1200px){
+  .quiz-body{padding:36px 80px;}
+  .card-scene,.btn-row,.nav-row{max-width:840px;}
+  .card-question{font-size:2.1rem;}
+  .card-answer{font-size:2.3rem;}
+  .btn{font-size:1.3rem;}
+}
+</style>
+</head>
+<body>
+
+<!-- ════════ HOME ════════ -->
+<div id="home">
+  <div class="rocket r1">🚀</div>
+  <div class="rocket r2">🛸</div>
+  <div class="rocket r3">✈️</div>
+  <div class="star" style="top:8%;left:10%;animation-delay:0s;">⭐</div>
+  <div class="star" style="top:15%;right:12%;animation-delay:0.3s;">⭐</div>
+  <div class="star" style="top:28%;left:5%;animation-delay:0.6s;">⭐</div>
+  <div class="star" style="top:52%;right:7%;animation-delay:0.9s;">⭐</div>
+  <div class="star" style="top:68%;left:14%;animation-delay:1.2s;">⭐</div>
+  <div class="star" style="top:80%;right:18%;animation-delay:0.4s;">⭐</div>
+  <div class="star" style="top:90%;left:42%;animation-delay:0.8s;">⭐</div>
+  <div class="star" style="top:5%;left:58%;animation-delay:1s;">⭐</div>
+  <div class="star" style="top:44%;left:92%;animation-delay:0.2s;">⭐</div>
+  <div class="star" style="top:24%;left:78%;animation-delay:1.4s;">⭐</div>
+  <div class="home-card">
+    <div class="home-title">🔬 Quick Revision</div>
+    <div class="home-sub">CBSE Flashcard Learning</div>
+    <div class="chapter-box">
+      <strong>The Invisible Living World<br>Beyond Our Naked Eye</strong>
+      <p>Class 8 &nbsp;•&nbsp; Science &nbsp;•&nbsp; Chapter 2</p>
+    </div>
+    <span class="badge">✨ 25 Flashcards</span>
+    <input class="name-input" id="nameInput" type="text" placeholder="Enter your name..." maxlength="30">
+    <button class="start-btn" onclick="startQuiz()">Start Learning →</button>
+    <p class="powered">Powered by Aveti Learning</p>
+  </div>
+</div>
+
+<!-- ════════ QUIZ ════════ -->
+<div id="quiz">
+  <div class="top-bar">
+    <div class="brand">Aveti Learning</div>
+    <div class="q-counter" id="qCounter">1 / 25</div>
+    <button class="finish-btn" onclick="finishQuiz()">Finish ✓</button>
+  </div>
+  <div class="seg-bar" id="segBar"></div>
+  <div class="stats-row">
+    <div class="stat-box">
+      <div class="stat-label">⭐ XP</div>
+      <div class="stat-val" id="xpVal">0</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-label">🔥 Streak</div>
+      <div class="stat-val" id="streakVal">0</div>
+    </div>
+  </div>
+  <div class="quiz-body" id="quizBody"></div>
+</div>
+
+<!-- ════════ RESULT ════════ -->
+<div id="result">
+  <div class="res-top-bar">
+    <div class="res-brand">Aveti Learning</div>
+  </div>
+  <div class="res-card" id="resCard">
+    <div class="res-header">
+      <div class="res-student" id="resStudent"></div>
+      <div class="res-chapter">Class 8 • Science • The Invisible Living World</div>
+      <div class="score-pct" id="resPct">0%</div>
+      <div class="score-label">Your Score</div>
+      <div class="perf-msg" id="perfMsg"></div>
+    </div>
+
+    <!-- Single circle + right stats -->
+    <div class="circle-stats-row">
+      <div class="circle-wrap">
+        <svg viewBox="0 0 160 160" style="transform:rotate(-90deg)">
+          <!-- track -->
+          <circle cx="80" cy="80" r="68" fill="none" stroke="#E8F5E9" stroke-width="16"/>
+          <!-- wrong + skipped arc (light) -->
+          <circle cx="80" cy="80" r="68" fill="none" stroke="#C8E6C9" stroke-width="16"
+            stroke-dasharray="427.3" stroke-dashoffset="0" id="arcLight" stroke-linecap="butt"/>
+          <!-- correct arc (dark) -->
+          <circle cx="80" cy="80" r="68" fill="none" stroke="#2E7D32" stroke-width="16"
+            stroke-dasharray="427.3" stroke-dashoffset="427.3" id="arcDark" stroke-linecap="round"/>
+        </svg>
+        <div class="circle-inner">
+          <span class="ci-num" id="ciNum">0</span>
+          <span class="ci-lbl">Correct</span>
+          <span class="ci-time" id="ciTime">0m 0s</span>
+        </div>
+      </div>
+
+      <div class="right-stats">
+        <div class="rst-item">
+          <span class="rst-label">✅ Correct</span>
+          <span class="rst-val" id="rsCorrect">0</span>
+        </div>
+        <div class="rst-item rst-wrong">
+          <span class="rst-label">❌ Wrong</span>
+          <span class="rst-val" id="rsWrong">0</span>
+        </div>
+        <div class="rst-item rst-skip">
+          <span class="rst-label">⏭ Skipped</span>
+          <span class="rst-val" id="rsSkipped">0</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- XP & Streak -->
+    <div class="xp-row">
+      <div class="xp-box"><div class="xp-label">⭐ Total XP</div><div class="xp-val" id="resXP">0</div></div>
+      <div class="xp-box"><div class="xp-label">🔥 Max Streak</div><div class="xp-val" id="resStreak">0</div></div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="res-btn-row">
+      <button class="res-btn btn-retry" onclick="retryQuiz()">🔁 Try Again</button>
+      <button class="res-btn btn-share" id="shareBtn" onclick="shareResult()">
+        <span id="shareIcon">📱</span>
+        <span id="shareTxt">Share</span>
+        <div class="share-loader" id="shareLoader"></div>
+      </button>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-box">
+      <div class="cta-title">🎓 Aveti Learning Tuition Centre</div>
+      <div class="cta-addr">
+        Class 5 to 10 &nbsp;•&nbsp; Offline Coaching<br>
+        Baramunda Housing Board, Bhubaneswar
+      </div>
+      <div class="cta-tags">
+        <span class="cta-tag">👨‍🏫 Expert Teachers</span>
+        <span class="cta-tag">📈 Better Marks</span>
+        <span class="cta-tag">📚 More Practice</span>
+      </div>
+      <a class="cta-phone" href="tel:7894040614">📞 7894040614</a>
+    </div>
+    <p class="res-powered">Powered by Aveti Learning</p>
+  </div>
+</div>
+
+<div class="xp-popup" id="xpPopup"></div>
+
+<script>
+const FLASHCARDS = [
+  {type:"Definition", q:"What is a cell?", a:"Basic unit of life"},
+  {type:"True/False", q:"TRUE OR FALSE:\nRobert Hooke first used the word 'cell' in science.", a:"✅ True"},
+  {type:"Cause & Effect", q:"Why do cells in our body have different shapes?", a:"Shape matches their specific function"},
+  {type:"Definition", q:"What is the nucleus of a cell?", a:"Control centre — regulates all cell activities"},
+  {type:"Application", q:"Name the three basic parts of a cell.", a:"Cell membrane, Cytoplasm, Nucleus"},
+  {type:"True/False", q:"TRUE OR FALSE:\nAll living organisms are made up of cells.", a:"✅ True"},
+  {type:"Misconception", q:"A cell is just a simple bag of liquid — True or False?", a:"❌ False — cells have many complex specialised parts"},
+  {type:"Cause & Effect", q:"Why is the cell membrane important for a cell?", a:"Controls entry of useful materials and exit of waste"},
+  {type:"Definition", q:"What is cytoplasm?", a:"Fluid-filled space between cell membrane and nucleus"},
+  {type:"Definition", q:"Who is called the Father of Microbiology?", a:"Antonie van Leeuwenhoek"},
+  {type:"True/False", q:"TRUE OR FALSE:\nPlant cells have a cell wall but animal cells do not.", a:"✅ True"},
+  {type:"Cause & Effect", q:"Why do plant cells have a cell wall?", a:"Provides rigidity and structural strength to plants"},
+  {type:"Definition", q:"What is a tissue?", a:"Group of similar cells performing the same function"},
+  {type:"Application", q:"List the correct levels of organisation in living beings.", a:"Cell → Tissue → Organ → Organ System → Organism"},
+  {type:"Application", q:"What stain is used to observe onion peel cells under a microscope?", a:"Safranin (red-coloured stain)"},
+  {type:"True/False", q:"TRUE OR FALSE:\nAnimal cells usually have large vacuoles.", a:"❌ False — animal cells have small or no vacuoles"},
+  {type:"Definition", q:"What is microbiology?", a:"Study of microscopic living organisms"},
+  {type:"Cause & Effect", q:"Why do scientists stain cells before observing under a microscope?", a:"Increases contrast — makes cell parts clearly visible"},
+  {type:"Misconception", q:"Only animals are multicellular organisms — Correct or Incorrect?", a:"❌ Incorrect — plants are also multicellular organisms"},
+  {type:"Application", q:"Name the three basic parts found in all cells.", a:"Cell membrane, Cytoplasm, Nucleus"},
+  {type:"True/False", q:"TRUE OR FALSE:\nThe yolk of an ostrich egg is the largest known single cell.", a:"✅ True — measures 130–170 mm in diameter"},
+  {type:"Definition", q:"What is a chloroplast?", a:"Green plastid with chlorophyll; helps in photosynthesis"},
+  {type:"Cause & Effect", q:"Why is the nucleus called the control centre of the cell?", a:"It regulates all activities and growth of the cell"},
+  {type:"Application", q:"What does a microscope help scientists do?", a:"See microorganisms & cell structures invisible to the naked eye"},
+  {type:"True/False", q:"TRUE OR FALSE:\nRobert Hooke's microscope magnified objects 200–300 times.", a:"✅ True"}
+];
+
+const TOTAL = FLASHCARDS.length;
+// null=unanswered(skipped), true=correct, false=wrong
+let answers = new Array(TOTAL).fill(null);
+
+let studentName="", currentQ=0, xp=0, streak=0, maxStreak=0, startTime=0, flipped=false, answered=false;
+
+/* ── helpers ── */
+function beep(type){
+  try{
+    const ac=new AudioContext();const o=ac.createOscillator();const g=ac.createGain();
+    o.connect(g);g.connect(ac.destination);
+    o.frequency.value=type==="correct"?880:200;
+    g.gain.setValueAtTime(0.3,ac.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001,ac.currentTime+0.4);
+    o.start();o.stop(ac.currentTime+0.4);
+  }catch(e){}
+}
+
+function showXPPopup(pts){
+  const el=document.getElementById("xpPopup");
+  el.textContent="+"+pts+" XP 🌟";
+  el.classList.remove("show");void el.offsetWidth;el.classList.add("show");
+}
+
+function buildSegBar(){
+  const bar=document.getElementById("segBar");
+  bar.innerHTML="";
+  FLASHCARDS.forEach((_,i)=>{
+    const s=document.createElement("div");
+    s.className="seg";
+    s.id="seg"+i;
+    bar.appendChild(s);
+  });
+}
+
+function updateSegBar(){
+  answers.forEach((a,i)=>{
+    const s=document.getElementById("seg"+i);
+    if(!s)return;
+    s.className="seg";
+    if(i===currentQ) s.classList.add("ans-current");
+    else if(a===true) s.classList.add("ans-correct");
+    else if(a===false) s.classList.add("ans-wrong");
+  });
+}
+
+/* ── start ── */
+function startQuiz(){
+  const name=document.getElementById("nameInput").value.trim();
+  studentName=name||"Student";
+  currentQ=0;xp=0;streak=0;maxStreak=0;flipped=false;answered=false;
+  answers=new Array(TOTAL).fill(null);
+  startTime=Date.now();
+  document.getElementById("home").style.display="none";
+  document.getElementById("quiz").style.display="flex";
+  buildSegBar();
+  renderCard();
+}
+
+/* ── render ── */
+function renderCard(){
+  flipped=false;
+  const prevAnswered=answers[currentQ];
+  answered=(prevAnswered!==null);
+
+  const card=FLASHCARDS[currentQ];
+  document.getElementById("qCounter").textContent=(currentQ+1)+" / "+TOTAL;
+  document.getElementById("xpVal").textContent=xp;
+  document.getElementById("streakVal").textContent=streak;
+  updateSegBar();
+
+  const body=document.getElementById("quizBody");
+  const lines=card.q.split("\n");
+  const hasLabel=lines.length>1;
+  const labelHTML=hasLabel
+    ?`<div class="card-type-badge">${lines[0]}</div><div class="card-question">${lines.slice(1).join(" ")}</div>`
+    :`<div class="card-question">${card.q}</div>`;
+
+  const sceneClass=prevAnswered===true?"card-scene was-correct":prevAnswered===false?"card-scene was-wrong":"card-scene";
+  const skipLabel=prevAnswered===null?"⏭ Skip":"↩ Re-answer";
+  const skipClass=prevAnswered===null?"skip-btn":"skip-btn skipped-state";
+
+  body.innerHTML=`
+    <div class="${sceneClass}" id="cardScene" onclick="flipCard()">
+      <div class="card-inner" id="cardInner">
+        <div class="card-face card-front">
+          ${labelHTML}
+          <div class="tap-hint">👆 Tap card to reveal answer</div>
+        </div>
+        <div class="card-face card-back card-back-abs">
+          <div class="card-answer">${card.a}</div>
+          <div class="answer-hint">How did you do?</div>
+        </div>
+      </div>
+    </div>
+    <div class="btn-row${answered?' visible':''}" id="btnRow">
+      <button class="btn btn-wrong" onclick="markAnswer(false)">❌ &nbsp;Wrong</button>
+      <button class="btn btn-correct" onclick="markAnswer(true)">✅ &nbsp;Correct</button>
+    </div>
+    <div class="nav-row">
+      <button class="nav-btn" id="btnPrev" onclick="navTo(${currentQ-1})" ${currentQ===0?"disabled":""}>←</button>
+      <span class="swipe-hint">⟵ Swipe to move ⟶</span>
+      <button class="nav-btn" id="btnNext" onclick="navTo(${currentQ+1})" ${currentQ===TOTAL-1?"disabled":""}>→</button>
+    </div>`;
+}
+
+function flipCard(){
+  if(answered)return;
+  flipped=!flipped;
+  document.getElementById("cardInner").classList.toggle("flipped",flipped);
+  if(flipped) document.getElementById("btnRow").classList.add("visible");
+}
+
+function markAnswer(isCorrect){
+  if(answered)return;
+  answered=true;
+  answers[currentQ]=isCorrect;
+  if(isCorrect){
+    streak++;
+    if(streak>maxStreak)maxStreak=streak;
+    let pts=10;if(streak>=5)pts=20;else if(streak>=3)pts=15;
+    xp+=pts;beep("correct");showXPPopup(pts);
+  }else{
+    streak=0;beep("wrong");
+  }
+  setTimeout(()=>{
+    if(currentQ<TOTAL-1) navTo(currentQ+1);
+    else finishQuiz();
+  },580);
+}
+
+function skipCurrent(){
+  answers[currentQ]=null;
+  updateSegBar();
+  if(currentQ<TOTAL-1) navTo(currentQ+1);
+  else finishQuiz();
+}
+
+function navTo(idx){
+  if(idx<0||idx>=TOTAL)return;
+  currentQ=idx;
+  renderCard();
+}
+
+function finishQuiz(){
+  document.getElementById("quiz").style.display="none";
+  showResult();
+}
+
+/* ── result ── */
+function showResult(){
+  document.getElementById("result").style.display="flex";
+  const elapsed=Math.floor((Date.now()-startTime)/1000);
+  const mins=Math.floor(elapsed/60);const secs=elapsed%60;
+  const timeStr=mins+"m "+secs+"s";
+
+  const correctCount=answers.filter(a=>a===true).length;
+  const wrongCount=answers.filter(a=>a===false).length;
+  const skippedCount=answers.filter(a=>a===null).length;
+  const pct=Math.round((correctCount/TOTAL)*100);
+
+  document.getElementById("resStudent").textContent="🎓 "+studentName;
+  document.getElementById("resPct").textContent=pct+"%";
+  document.getElementById("ciNum").textContent=correctCount;
+  document.getElementById("ciTime").textContent=timeStr;
+  document.getElementById("rsCorrect").textContent=correctCount;
+  document.getElementById("rsWrong").textContent=wrongCount;
+  document.getElementById("rsSkipped").textContent=skippedCount;
+  document.getElementById("resXP").textContent=xp;
+  document.getElementById("resStreak").textContent=maxStreak;
+
+  const msgs=["🏆 Outstanding! You're a star!","🌟 Excellent work! Keep it up!","👍 Good effort! Revise a bit more.","📚 Keep practising — you can do it!","💪 Don't give up — try again!"];
+  document.getElementById("perfMsg").textContent=pct>=90?msgs[0]:pct>=75?msgs[1]:pct>=60?msgs[2]:pct>=40?msgs[3]:msgs[4];
+
+  // Single circle animation — dark arc = correct/total
+  const circ=2*Math.PI*68; // 427.3
+  const correctOff=circ*(1-(correctCount/TOTAL));
+  setTimeout(()=>{
+    const arc=document.getElementById("arcDark");
+    arc.style.transition="stroke-dashoffset 1.3s cubic-bezier(0.4,0,0.2,1)";
+    arc.style.strokeDashoffset=correctOff;
+  },150);
+}
+
+/* ── retry ── */
+function retryQuiz() {
+  document.getElementById("result").style.display="none";
+  const arc=document.getElementById("arcDark");
+  arc.style.transition="none";
+  arc.style.strokeDashoffset=427.3;
+  startQuiz();
+}
+
+/* ── swipe navigation ── */
+(function(){
+  let tx=0,ty=0;
+  document.getElementById("quizBody").addEventListener("touchstart",e=>{
+    tx=e.touches[0].clientX;ty=e.touches[0].clientY;
+  },{passive:true});
+  document.getElementById("quizBody").addEventListener("touchend",e=>{
+    const dx=e.changedTouches[0].clientX-tx;
+    const dy=e.changedTouches[0].clientY-ty;
+    if(Math.abs(dx)<40||Math.abs(dx)<Math.abs(dy)*1.2)return; // ignore short/vertical
+    if(dx<0) navTo(currentQ+1); // swipe left → next
+    else      navTo(currentQ-1); // swipe right → prev
+  },{passive:true});
+})();
+
+/* ── share (screenshot) ── */
+async function shareResult(){
+  const btn=document.getElementById("shareBtn");
+  const loader=document.getElementById("shareLoader");
+  const icon=document.getElementById("shareIcon");
+  const txt=document.getElementById("shareTxt");
+
+  // Show loader
+  icon.style.display="none";txt.textContent="Capturing…";
+  loader.style.display="block";btn.disabled=true;
+
+  try{
+    const el=document.getElementById("resCard");
+    const canvas=await html2canvas(el,{
+      scale:2,useCORS:true,backgroundColor:"#ffffff",
+      scrollX:0,scrollY:-window.scrollY,
+      windowWidth:document.documentElement.scrollWidth,
+    });
+
+    loader.style.display="none";icon.style.display="inline";
+    txt.textContent="Share";btn.disabled=false;
+
+    canvas.toBlob(async blob=>{
+      const file=new File([blob],"aveti-result.png",{type:"image/png"});
+      const pct=document.getElementById("resPct").textContent;
+
+      if(navigator.canShare&&navigator.canShare({files:[file]})){
+        await navigator.share({
+          files:[file],
+          title:"My Aveti Quiz Result",
+          text:`I scored ${pct} on The Invisible Living World | Class 8 Science!\nJoin Aveti's Tuition: 📞 7894040614`
+        }).catch(()=>{});
+      }else{
+        // fallback: download
+        const a=document.createElement("a");
+        a.href=URL.createObjectURL(blob);
+        a.download="aveti-result.png";
+        a.click();
+        setTimeout(()=>URL.revokeObjectURL(a.href),5000);
+      }
+    },"image/png");
+
+  }catch(err){
+    loader.style.display="none";icon.style.display="inline";
+    txt.textContent="Share";btn.disabled=false;
+    // Text fallback
+    const pct=document.getElementById("resPct").textContent;
+    const msg=`🔬 I scored ${pct} on Aveti Quiz!\n📖 Class 8 Science — The Invisible Living World\n⭐ XP: ${xp} | 🔥 Max Streak: ${maxStreak}\n\n🎓 Aveti Tuition, Baramunda, Bhubaneswar\n📞 7894040614`;
+    if(navigator.share) navigator.share({title:"My Aveti Result",text:msg}).catch(()=>{});
+    else navigator.clipboard.writeText(msg).then(()=>alert("Result copied! Share it 🎉")).catch(()=>{});
+  }
+}
+</script>
+</body>
+</html>

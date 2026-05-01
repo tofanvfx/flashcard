@@ -8,7 +8,7 @@ function App() {
   const [flashcards, setFlashcards] = useState([]);
   const [metadata, setMetadata] = useState({
     title: 'Quick Revision',
-    subtitle: 'CBSE Flashcard Learning',
+    subtitle: 'Flashcard Learning',
     chapterName: 'The Invisible Living World',
     className: 'Class 8',
     subject: 'Science',
@@ -55,19 +55,19 @@ function App() {
   const handleGenerate = () => {
     if (!file || flashcards.length === 0) return;
     setGenerating(true);
-    
+
     try {
       const html = generateHTML(flashcards, metadata);
-      
+
       const blob = new Blob([html], { type: 'text/html' });
       const url = URL.createObjectURL(blob);
-      
+
       const a = document.createElement('a');
       a.href = url;
       a.download = `${metadata.chapterName.replace(/\s+/g, '_').toLowerCase()}_flashcards.html`;
       document.body.appendChild(a);
       a.click();
-      
+
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
     } catch (err) {
@@ -89,7 +89,7 @@ function App() {
           <div className="card-header">
             <h2><FileType size={20} /> Content Details</h2>
           </div>
-          
+
           <div className="form-grid">
             <div className="input-group">
               <label>Course Title</label>
@@ -122,21 +122,21 @@ function App() {
           <div className="card-header">
             <h2><FileSpreadsheet size={20} /> Data Source</h2>
           </div>
-          
-          <div 
+
+          <div
             className={`dropzone ${file ? 'has-file' : ''} ${error ? 'has-error' : ''}`}
             onDragOver={handleDragOver}
             onDrop={handleDrop}
             onClick={() => fileInputRef.current.click()}
           >
-            <input 
-              type="file" 
-              ref={fileInputRef} 
-              onChange={handleFileChange} 
-              accept=".xlsx,.xls" 
-              style={{ display: 'none' }} 
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              accept=".xlsx,.xls"
+              style={{ display: 'none' }}
             />
-            
+
             {file ? (
               <div className="file-success">
                 <CheckCircle size={48} className="success-icon" />
@@ -156,12 +156,12 @@ function App() {
               </div>
             )}
           </div>
-          
+
           {error && <div className="error-msg">{error}</div>}
         </section>
 
         <div className="action-row">
-          <button 
+          <button
             className={`generate-btn ${(!file || flashcards.length === 0) ? 'disabled' : ''}`}
             onClick={handleGenerate}
             disabled={!file || flashcards.length === 0 || generating}
@@ -171,7 +171,7 @@ function App() {
           </button>
         </div>
       </main>
-      
+
       <div className="bg-elements">
         <div className="blob blob-1"></div>
         <div className="blob blob-2"></div>

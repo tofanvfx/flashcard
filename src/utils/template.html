@@ -235,11 +235,18 @@ html,body{font-family:system-ui,-apple-system,sans-serif;background:#E8F5E9;min-
   width:clamp(140px,32vw,180px);
   height:clamp(140px,32vw,180px);
   position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
-.circle-wrap svg{width:100%;height:100%;}
+.circle-wrap svg{
+  position:absolute;top:0;left:0;
+  width:100%;height:100%;
+}
 .circle-inner{
-  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  position:relative;
   text-align:center;line-height:1.2;
+  z-index:1;
 }
 .ci-num{font-size:clamp(1.8rem,6vw,2.6rem);font-weight:900;color:#2E7D32;display:block;}
 .ci-lbl{font-size:clamp(0.62rem,1.6vw,0.78rem);color:#66BB6A;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;display:block;}
@@ -281,25 +288,42 @@ html,body{font-family:system-ui,-apple-system,sans-serif;background:#E8F5E9;min-
 .share-loader{display:none;width:16px;height:16px;border:2px solid rgba(255,255,255,0.4);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
 
-/* CTA */
+/* CTA Redesign */
 .cta-box{
-  background:linear-gradient(135deg,#1B5E20,#2E7D32);
-  border-radius:20px;padding:clamp(18px,3.5vw,28px);color:#fff;text-align:center;
+  background:#fdfdfd;border:2px solid #e8e8e8;
+  border-radius:16px;padding:clamp(12px,2vw,16px);color:#111;
+  box-shadow:0 8px 24px rgba(0,0,0,0.06);position:relative;overflow:hidden;
 }
-.cta-title{font-size:clamp(1rem,3vw,1.25rem);font-weight:900;margin-bottom:4px;}
-.cta-addr{font-size:clamp(0.75rem,2vw,0.9rem);opacity:0.88;margin-bottom:10px;line-height:1.5;}
-.cta-tags{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
-.cta-tag{
-  background:rgba(255,255,255,0.18);border-radius:20px;
-  padding:4px 12px;font-size:clamp(0.68rem,1.8vw,0.82rem);font-weight:700;
-}
-.cta-phone{
-  display:inline-flex;align-items:center;gap:6px;background:#fff;color:#2E7D32;
-  font-weight:900;font-size:clamp(1rem,3vw,1.25rem);
-  padding:clamp(10px,2vw,14px) clamp(24px,5vw,40px);
-  border-radius:12px;text-decoration:none;transition:all 0.3s;
-}
-.cta-phone:hover{background:#E8F5E9;transform:translateY(-2px);}
+.cta-header{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:12px;flex-wrap:wrap;}
+.cta-logo-text{font-size:clamp(1.2rem,3vw,1.4rem);font-weight:900;color:#0a4a1a;white-space:nowrap;letter-spacing:-0.5px;}
+.cta-badge-top{background:#0a4a1a;color:#fff;padding:4px 12px;border-radius:16px;font-weight:800;font-size:clamp(0.75rem,2vw,0.85rem);white-space:nowrap;}
+
+.cta-features{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
+.cta-feature-card{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;border-radius:12px;gap:6px;border:1px solid rgba(0,0,0,0.04);}
+.cta-feature-card.schools{background:#eff9f0;}
+.cta-feature-card.students{background:#f0f6ff;}
+.cta-feature-card.parents{background:#fff8eb;}
+
+.cta-feature-left{display:flex;align-items:center;gap:8px;flex-grow:1;min-width:0;}
+.cta-feature-icon{font-size:1.6rem;flex-shrink:0;width:32px;text-align:center;}
+.cta-feature-content{flex-grow:1;min-width:0;}
+.cta-feature-title{font-weight:800;color:#222;font-size:clamp(0.75rem,2vw,0.85rem);margin-bottom:2px;line-height:1.4;padding-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.cta-feature-desc{font-size:clamp(0.7rem,1.8vw,0.75rem);color:#444;line-height:1.4;padding-bottom:2px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+.cta-feature-pill{flex-shrink:0;display:flex;flex-direction:row;align-items:center;gap:4px;padding:4px 10px;border-radius:14px;color:#fff;}
+.cta-feature-card.schools .cta-feature-pill{background:#309635;}
+.cta-feature-card.students .cta-feature-pill{background:#185ac1;}
+.cta-feature-card.parents .cta-feature-pill{background:#e06d12;}
+.cta-pill-icon{font-size:0.85rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.cta-pill-text{font-size:0.65rem;font-weight:800;white-space:nowrap;}
+
+.cta-contact{text-align:center;margin-bottom:12px;}
+.cta-call-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:#0a4a1a;color:#fff;padding:8px 16px;border-radius:24px;font-size:clamp(0.95rem,2.5vw,1.1rem);font-weight:900;text-decoration:none;box-shadow:0 4px 12px rgba(10,74,26,0.2);white-space:nowrap;width:100%;max-width:320px;}
+.cta-call-icon{background:#309635;color:#fff;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.9rem;flex-shrink:0;}
+
+.cta-trust{display:flex;justify-content:center;flex-wrap:wrap;gap:8px 12px;border-top:1px dashed #eaeaea;padding-top:12px;}
+.cta-trust-item{display:flex;align-items:center;gap:4px;font-size:clamp(0.65rem,1.5vw,0.75rem);font-weight:700;color:#555;line-height:1.2;text-align:left;}
+.cta-trust-icon{font-size:1.1rem;flex-shrink:0;}
 
 .res-powered{font-size:clamp(0.65rem,1.6vw,0.8rem);color:#66BB6A;text-align:center;margin-top:12px;}
 
@@ -387,15 +411,17 @@ html,body{font-family:system-ui,-apple-system,sans-serif;background:#E8F5E9;min-
     <!-- Single circle + right stats -->
     <div class="circle-stats-row">
       <div class="circle-wrap">
-        <svg viewBox="0 0 160 160" style="transform:rotate(-90deg)">
-          <!-- track -->
-          <circle cx="80" cy="80" r="68" fill="none" stroke="#E8F5E9" stroke-width="16"/>
-          <!-- wrong + skipped arc (light) -->
-          <circle cx="80" cy="80" r="68" fill="none" stroke="#C8E6C9" stroke-width="16"
-            stroke-dasharray="427.3" stroke-dashoffset="0" id="arcLight" stroke-linecap="butt"/>
-          <!-- correct arc (dark) -->
-          <circle cx="80" cy="80" r="68" fill="none" stroke="#2E7D32" stroke-width="16"
-            stroke-dasharray="427.3" stroke-dashoffset="427.3" id="arcDark" stroke-linecap="round"/>
+        <svg viewBox="0 0 160 160">
+          <g transform="rotate(-90 80 80)">
+            <!-- track -->
+            <circle cx="80" cy="80" r="68" fill="none" stroke="#E8F5E9" stroke-width="16"/>
+            <!-- wrong + skipped arc (light) -->
+            <circle cx="80" cy="80" r="68" fill="none" stroke="#C8E6C9" stroke-width="16"
+              stroke-dasharray="427.3" stroke-dashoffset="0" id="arcLight" stroke-linecap="butt"/>
+            <!-- correct arc (dark) -->
+            <circle cx="80" cy="80" r="68" fill="none" stroke="#2E7D32" stroke-width="16"
+              stroke-dasharray="427.3" stroke-dashoffset="427.3" id="arcDark" stroke-linecap="round"/>
+          </g>
         </svg>
         <div class="circle-inner">
           <span class="ci-num" id="ciNum">0</span>
@@ -438,17 +464,74 @@ html,body{font-family:system-ui,-apple-system,sans-serif;background:#E8F5E9;min-
 
     <!-- CTA -->
     <div class="cta-box">
-      <div class="cta-title">🎓 Aveti Learning Tuition Centre</div>
-      <div class="cta-addr">
-        Class 5 to 10 &nbsp;•&nbsp; Offline Coaching<br>
-        Baramunda Housing Board, Bhubaneswar
+      <div class="cta-header">
+        <div class="cta-logo-text">Aveti Learning</div>
+        <div class="cta-badge-top">Class 1–12 | CBSE & Odia Board</div>
       </div>
-      <div class="cta-tags">
-        <span class="cta-tag">👨‍🏫 Expert Teachers</span>
-        <span class="cta-tag">📈 Better Marks</span>
-        <span class="cta-tag">📚 More Practice</span>
+
+      <div class="cta-features">
+        <div class="cta-feature-card schools">
+          <div class="cta-feature-left">
+            <div class="cta-feature-icon">🏫</div>
+            <div class="cta-feature-content">
+              <div class="cta-feature-title">NEP-aligned digital lessons.</div>
+              <div class="cta-feature-desc">Teach better, save time</div>
+            </div>
+          </div>
+          <div class="cta-feature-pill">
+            <div class="cta-pill-icon">👥</div>
+            <div class="cta-pill-text">For Schools</div>
+          </div>
+        </div>
+        <div class="cta-feature-card students">
+          <div class="cta-feature-left">
+            <div class="cta-feature-icon">📱</div>
+            <div class="cta-feature-content">
+              <div class="cta-feature-title">Practice daily on Aveti App.</div>
+              <div class="cta-feature-desc">Improve exam scores</div>
+            </div>
+          </div>
+          <div class="cta-feature-pill">
+            <div class="cta-pill-icon">🧑‍🎓</div>
+            <div class="cta-pill-text">For Students</div>
+          </div>
+        </div>
+        <div class="cta-feature-card parents">
+          <div class="cta-feature-left">
+            <div class="cta-feature-icon">👨‍👩‍👧‍👦</div>
+            <div class="cta-feature-content">
+              <div class="cta-feature-title">Offline Tuition:</div>
+              <div class="cta-feature-desc">Personal attention for real marks improvement</div>
+            </div>
+          </div>
+          <div class="cta-feature-pill">
+            <div class="cta-pill-icon">👨‍👩‍👧</div>
+            <div class="cta-pill-text">For Parents</div>
+          </div>
+        </div>
       </div>
-      <a class="cta-phone" href="tel:7894040614">📞 7894040614</a>
+
+      <div class="cta-contact">
+        <a class="cta-call-btn" href="tel:7894040614">
+          <div class="cta-call-icon">📞</div>
+          Call: 7894040614 / 9124084100
+        </a>
+      </div>
+
+      <div class="cta-trust">
+        <div class="cta-trust-item">
+          <div class="cta-trust-icon">🛡️</div>
+          <div>Trusted by Schools & Parents</div>
+        </div>
+        <div class="cta-trust-item">
+          <div class="cta-trust-icon">🏅</div>
+          <div>Quality Content you can trust</div>
+        </div>
+        <div class="cta-trust-item">
+          <div class="cta-trust-icon">📈</div>
+          <div>Better Learning Better Future</div>
+        </div>
+      </div>
     </div>
     <p class="res-powered">Powered by Aveti Learning</p>
   </div>

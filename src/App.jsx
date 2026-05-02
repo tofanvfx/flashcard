@@ -89,14 +89,14 @@ function App() {
         <div className="language-selector" style={{ display: 'flex', gap: '10px', marginBottom: '20px', justifyContent: 'center' }}>
           <button 
             className={`btn ${language === 'english' ? 'active' : ''}`}
-            style={{ padding: '8px 24px', borderRadius: '20px', border: language === 'english' ? '2px solid #2E7D32' : '2px solid #ccc', background: language === 'english' ? '#E8F5E9' : '#fff', color: language === 'english' ? '#2E7D32' : '#666', fontWeight: 'bold', cursor: 'pointer' }}
+            style={{ padding: '8px 24px', borderRadius: '20px', border: language === 'english' ? '2px solid #2E7D32' : '2px solid #ccc', background: language === 'english' ? '#2E7D32' : '#fff', color: language === 'english' ? '#fff' : '#666', fontWeight: 'bold', cursor: 'pointer', transition: 'all 0.3s' }}
             onClick={() => setLanguage('english')}
           >
             English
           </button>
           <button 
             className={`btn ${language === 'odia' ? 'active' : ''}`}
-            style={{ padding: '8px 24px', borderRadius: '20px', border: language === 'odia' ? '2px solid #2E7D32' : '2px solid #ccc', background: language === 'odia' ? '#E8F5E9' : '#fff', color: language === 'odia' ? '#2E7D32' : '#666', fontWeight: 'bold', cursor: 'pointer' }}
+            style={{ padding: '8px 24px', borderRadius: '20px', border: language === 'odia' ? '2px solid #2E7D32' : '2px solid #ccc', background: language === 'odia' ? '#2E7D32' : '#fff', color: language === 'odia' ? '#fff' : '#666', fontWeight: 'bold', cursor: 'pointer', transition: 'all 0.3s' }}
             onClick={() => setLanguage('odia')}
           >
             ଓଡ଼ିଆ (Odia)
@@ -170,6 +170,11 @@ function App() {
                 <div className="format-hint">
                   Required columns: <strong>Question</strong>, <strong>Answer</strong>
                   <br />Optional column: <strong>Type</strong>
+                  <div style={{ marginTop: '15px' }}>
+                    <a href="/flashcards.xlsx" download className="sample-download-btn" onClick={(e) => e.stopPropagation()} style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '8px 16px', background: '#f0fdf4', color: '#166534', borderRadius: '20px', textDecoration: 'none', fontWeight: 'bold', border: '1px solid #bbf7d0', fontSize: '14px' }}>
+                      <Download size={16} /> Download Sample Excel
+                    </a>
+                  </div>
                 </div>
               </div>
             )}

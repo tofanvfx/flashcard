@@ -16,6 +16,7 @@ function App() {
   });
   const [error, setError] = useState(null);
   const [generating, setGenerating] = useState(false);
+  const [language, setLanguage] = useState('english');
   const fileInputRef = useRef(null);
 
   const handleDragOver = (e) => {
@@ -57,7 +58,7 @@ function App() {
     setGenerating(true);
 
     try {
-      const html = generateHTML(flashcards, metadata);
+      const html = generateHTML(flashcards, metadata, language);
 
       const blob = new Blob([html], { type: 'text/html' });
       const url = URL.createObjectURL(blob);
@@ -85,6 +86,23 @@ function App() {
       </header>
 
       <main className="main-content">
+        <div className="language-selector" style={{ display: 'flex', gap: '10px', marginBottom: '20px', justifyContent: 'center' }}>
+          <button 
+            className={`btn ${language === 'english' ? 'active' : ''}`}
+            style={{ padding: '8px 24px', borderRadius: '20px', border: language === 'english' ? '2px solid #2E7D32' : '2px solid #ccc', background: language === 'english' ? '#E8F5E9' : '#fff', color: language === 'english' ? '#2E7D32' : '#666', fontWeight: 'bold', cursor: 'pointer' }}
+            onClick={() => setLanguage('english')}
+          >
+            English
+          </button>
+          <button 
+            className={`btn ${language === 'odia' ? 'active' : ''}`}
+            style={{ padding: '8px 24px', borderRadius: '20px', border: language === 'odia' ? '2px solid #2E7D32' : '2px solid #ccc', background: language === 'odia' ? '#E8F5E9' : '#fff', color: language === 'odia' ? '#2E7D32' : '#666', fontWeight: 'bold', cursor: 'pointer' }}
+            onClick={() => setLanguage('odia')}
+          >
+            ଓଡ଼ିଆ (Odia)
+          </button>
+        </div>
+
         <section className="card config-section">
           <div className="card-header">
             <h2><FileType size={20} /> Content Details</h2>

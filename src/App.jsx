@@ -2,10 +2,12 @@ import { useState, useRef } from 'react';
 import { UploadCloud, FileType, CheckCircle, Download, FileSpreadsheet } from 'lucide-react';
 import { parseExcel } from './utils/excelParser';
 import { generateHTML } from './utils/generator';
+import { generateMCQHTML } from './utils/mcqGenerator';
 
 function App() {
   const [file, setFile] = useState(null);
   const [flashcards, setFlashcards] = useState([]);
+  const [mode, setMode] = useState('flashcard'); // 'flashcard' or 'mcq'
   const [metadata, setMetadata] = useState({
     title: 'Quick Revision',
     subtitle: 'Flashcard Learning',
@@ -41,6 +43,8 @@ function App() {
     setFile(selectedFile);
     try {
       const data = await parseExcel(selectedFile);
+      const detectedMode = data._mode || 'flashcard';
+      setMode(detectedMode);
       setFlashcards(data);
     } catch (err) {
       setError(err.message || 'Error parsing Excel file');
@@ -58,14 +62,23 @@ function App() {
     setGenerating(true);
 
     try {
-      const html = generateHTML(flashcards, metadata, language);
+      let html;
+      let suffix;
+
+      if (mode === 'mcq') {
+        html = generateMCQHTML(flashcards, metadata, language);
+        suffix = '_mcq.html';
+      } else {
+        html = generateHTML(flashcards, metadata, language);
+        suffix = '_flashcards.html';
+      }
 
       const blob = new Blob([html], { type: 'text/html' });
       const url = URL.createObjectURL(blob);
 
       const a = document.createElement('a');
       a.href = url;
-      a.download = `${metadata.chapterName.replace(/\s+/g, '_').toLowerCase()}_flashcards.html`;
+      a.download = `${metadata.chapterName.replace(/\s+/g, '_').toLowerCase()}${suffix}`;
       document.body.appendChild(a);
       a.click();
 
@@ -78,14 +91,27 @@ function App() {
     }
   };
 
+  const modeLabel = mode === 'mcq' ? 'MCQ' : 'Flashcard';
+  const modeColor = mode === 'mcq' ? '#1565C0' : '#2E7D32';
+  const itemLabel = mode === 'mcq' ? 'questions' : 'flashcards';
+
   return (
     <div className="app-container">
       <header className="app-header">
         <h1>Aveti Flashcard Generator</h1>
-        <p>Convert your Excel sheets into interactive flashcard modules</p>
+        <p>Convert your Excel sheets into interactive flashcard & MCQ modules</p>
       </header>
 
       <main className="main-content">
+        <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', marginBottom: '20px', flexWrap: 'wrap' }}>
+          <a href="/flashcards.xlsx" download style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '10px 20px', background: '#f0fdf4', color: '#166534', borderRadius: '24px', textDecoration: 'none', fontWeight: 'bold', border: '1.5px solid #bbf7d0', fontSize: '14px', transition: 'all 0.3s' }}>
+            <Download size={16} /> Sample Flashcard Excel
+          </a>
+          <a href="/mcq.xlsx" download style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '10px 20px', background: '#E3F2FD', color: '#1565C0', borderRadius: '24px', textDecoration: 'none', fontWeight: 'bold', border: '1.5px solid #90CAF9', fontSize: '14px', transition: 'all 0.3s' }}>
+            <Download size={16} /> Sample MCQ Excel
+          </a>
+        </div>
+
         <div className="language-selector" style={{ display: 'flex', gap: '10px', marginBottom: '20px', justifyContent: 'center' }}>
           <button 
             className={`btn ${language === 'english' ? 'active' : ''}`}
@@ -159,7 +185,22 @@ function App() {
               <div className="file-success">
                 <CheckCircle size={48} className="success-icon" />
                 <h3>{file.name}</h3>
-                <p>{flashcards.length} flashcards loaded</p>
+                <p>{flashcards.length} {itemLabel} loaded</p>
+                {mode === 'mcq' && (
+                  <span style={{ 
+                    display: 'inline-block', 
+                    marginTop: '8px', 
+                    padding: '4px 16px', 
+                    background: '#E3F2FD', 
+                    color: '#1565C0', 
+                    borderRadius: '20px', 
+                    fontWeight: 'bold', 
+                    fontSize: '13px',
+                    border: '1.5px solid #90CAF9'
+                  }}>
+                    📝 MCQ Mode Detected
+                  </span>
+                )}
                 <span className="replace-text">Click to replace file</span>
               </div>
             ) : (
@@ -168,13 +209,8 @@ function App() {
                 <h3>Drag & Drop Excel File</h3>
                 <p>or click to browse (.xlsx, .xls)</p>
                 <div className="format-hint">
-                  Required columns: <strong>Question</strong>, <strong>Answer</strong>
-                  <br />Optional column: <strong>Type</strong>
-                  <div style={{ marginTop: '15px' }}>
-                    <a href="/flashcards.xlsx" download className="sample-download-btn" onClick={(e) => e.stopPropagation()} style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '8px 16px', background: '#f0fdf4', color: '#166534', borderRadius: '20px', textDecoration: 'none', fontWeight: 'bold', border: '1px solid #bbf7d0', fontSize: '14px' }}>
-                      <Download size={16} /> Download Sample Excel
-                    </a>
-                  </div>
+                  <strong>Flashcard:</strong> Question, Answer (+ optional Type)
+                  <br /><strong>MCQ:</strong> Question, Option A–D, Correct Option (+ optional Type, Explanation, Feedback)
                 </div>
               </div>
             )}
@@ -188,9 +224,10 @@ function App() {
             className={`generate-btn ${(!file || flashcards.length === 0) ? 'disabled' : ''}`}
             onClick={handleGenerate}
             disabled={!file || flashcards.length === 0 || generating}
+            style={mode === 'mcq' ? { background: `linear-gradient(135deg, ${modeColor}, #0D47A1)` } : {}}
           >
             <Download size={24} />
-            {generating ? 'Generating...' : 'Generate Flashcards HTML'}
+            {generating ? 'Generating...' : `Generate ${modeLabel} HTML`}
           </button>
         </div>
       </main>
